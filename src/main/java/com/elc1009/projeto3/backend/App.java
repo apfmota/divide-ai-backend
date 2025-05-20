@@ -1,4 +1,4 @@
-package com.elec1009.projeto3.backend;
+package com.elc1009.projeto3.backend;
 
 /**
  * Hello world!

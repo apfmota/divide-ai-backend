@@ -3,7 +3,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.elec1009.projeto3.backend</groupId>
+  <groupId>com.elc1009.projeto3.backend</groupId>
   <artifactId>divide-ai-backend</artifactId>
   <version>1.0-SNAPSHOT</version>
 
