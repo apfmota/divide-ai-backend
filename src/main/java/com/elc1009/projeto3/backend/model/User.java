@@ -2,12 +2,20 @@ package com.elc1009.projeto3.backend.model;
 
 import java.util.List;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Column;
+
+@Entity
 public class User {
 
     private String userName;
     private String password;
     private List<Purchase> purchases;
 
+    @Id
+    @Column(unique = true)
     public String getUserName() {
         return userName;
     }
@@ -24,6 +32,7 @@ public class User {
         this.password = password;
     }
 
+    @OneToMany(mappedBy = "user")
     public List<Purchase> getPurchases() {
         return purchases;
     }
