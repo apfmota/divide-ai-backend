@@ -1,7 +1,6 @@
 package com.elc1009.projeto3.backend.model;
 
 import java.util.List;
-import org.hibernate.annotations.ManyToAny;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -9,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import java.util.Date;
 
 @Entity
 public class Purchase {
@@ -17,7 +17,10 @@ public class Purchase {
     private List<Item> items;
     private User user;
     private List<String> payers;
-    private String code;
+    private String url;
+    private Date scanDate;
+    private Date purchaseDate;
+    private String storeName;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -56,11 +59,37 @@ public class Purchase {
         this.payers = payers;
     }
 
-    public String getCode() {
-        return code;
+    public String getUrl() {
+        return url;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setUrl(String url) {
+        this.url = url;
     }
+
+    public Date getScanDate() {
+        return scanDate;
+    }
+
+    public void setScanDate(Date scanDate) {
+        this.scanDate = scanDate;
+    }
+
+    public Date getPurchaseDate() {
+        return purchaseDate;
+    }
+
+    public void setPurchaseDate(Date purchaseDate) {
+        this.purchaseDate = purchaseDate;
+    }
+
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
+
+    
 }
