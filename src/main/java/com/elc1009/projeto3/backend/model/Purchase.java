@@ -4,10 +4,13 @@ import java.util.List;
 import org.hibernate.annotations.ManyToAny;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
+@Entity
 public class Purchase {
     
     private Long id;
@@ -35,7 +38,7 @@ public class Purchase {
         this.items = items;
     }
     
-    @ManyToAny
+    @ManyToOne
     public User getUser() {
         return user;
     }

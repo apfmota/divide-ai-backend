@@ -1,0 +1,8 @@
+@apiurl = http://localhost
+
+POST {{apiurl}}/purchase HTTP/1.1
+Content-Type: application/json
+
+{
+  "url": "https://www.sefaz.rs.gov.br/NFCE/NFCE-COM.aspx?p=43250587042875000487650650003912921204111272|2|1|1|E56497233975F1D6DC81996EBE57D87073F1A04A"
+}

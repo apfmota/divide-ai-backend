@@ -8,12 +8,9 @@ from selenium.common.exceptions import TimeoutException #trativa de erros
 from selenium.common.exceptions import NoSuchElementException #trativa de erros
 import requests #fazer requisições http
 from bs4 import BeautifulSoup #webscraping
-from flask import Flask, request, jsonify
-from flask_cors import CORS #permite que o back e front andem de mões dadas e funcionem juntos
 import re
-app = Flask(__name__)
-CORS(app)  # Adicione isso para permitir CORS
-
+import sys
+import json
 #validacao das urls para nao ter problema
 def is_valid_url(url):
     return bool(re.match(r'^https:\/\/(www\.sefaz\.rs\.gov\.br|dfe-portal\.svrs\.rs\.gov\.br)', url))
@@ -97,19 +94,11 @@ def get_alternative_nfc_data(url):
 
     return items, total_value
 
-#processa os itens e valor total da compra para transformar em json pro javascript
-@app.route('/process_nfc', methods=['POST'])
-def process_nfc():
-    data = request.json
-    print(f"Received URL: {data['url']}")  # printa log
-    url = data['url']
-    if not url or not is_valid_url(url):
-        return jsonify({'error': 'URL inválida ou fora dos padrões permitidos.'}), 400
-    
-    items, total_value = get_nfc_data(url)
-    if not items:
-        items, total_value = get_alternative_nfc_data(url)
-    return jsonify({'items': items, 'total_value': total_value})
+url = sys.argv[1]
+if not url or not is_valid_url(url):
+    print(json.dumps({'error': 'URL inválida ou fora dos padrões permitidos.'}))
 
-if __name__ == '__main__':
-    app.run(debug=True)
+items, total_value = get_nfc_data(url)
+if not items:
+    items, total_value = get_alternative_nfc_data(url)
+print(json.dumps({'items': items, 'total_value': total_value}))

@@ -3,11 +3,13 @@ package com.elc1009.projeto3.backend.model;
 import java.math.BigDecimal;
 import java.util.List;
 import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
+@Entity
 public class Item {
     
     private Long id;
