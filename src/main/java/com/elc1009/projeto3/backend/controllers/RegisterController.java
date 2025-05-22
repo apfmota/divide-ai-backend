@@ -11,6 +11,7 @@ import com.elc1009.projeto3.backend.model.User;
 import com.elc1009.projeto3.backend.repository.UserRepository;
 import com.elc1009.projeto3.backend.response.ErrorResponse;
 import com.elc1009.projeto3.backend.response.SuccessResponse;
+import com.elc1009.projeto3.backend.util.PasswordEncrypt;
 
 @RestController
 @RequestMapping("/register")
@@ -22,9 +23,11 @@ public class RegisterController {
 	@PostMapping
 	@ResponseBody
 	public Object register(@RequestBody User user) {
-		if (userRepository.existsByUsername(user.getUserName())) {
+		System.out.println("Registering user: " + user.getUserName());
+		if (userRepository.existsByUserName(user.getUserName())) {
 			return new ErrorResponse("User already exists");
 		}
+		user.setPassword(PasswordEncrypt.passwordToMD5Hash(user.getPassword()));
 		userRepository.save(user);
 		return new SuccessResponse("User registered successfully");
 	}

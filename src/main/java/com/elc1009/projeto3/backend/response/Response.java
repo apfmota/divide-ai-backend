@@ -9,4 +9,12 @@ public abstract class Response {
         this.type = type;
         this.message = message;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }

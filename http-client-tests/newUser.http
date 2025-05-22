@@ -1,6 +1,6 @@
 @apiurl = http://localhost
 
-POST {{apiurl}}/login HTTP/1.1
+POST {{apiurl}}/register HTTP/1.1
 Content-Type: application/json
 
 {
