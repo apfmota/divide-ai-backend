@@ -1,0 +1,15 @@
+
+@apiurl = http://localhost
+
+PUT {{apiurl}}/purchase HTTP/1.1
+Content-Type: application/json
+
+{
+    "id": 3902,
+    "payers": [
+        "Andriel",
+        "João",
+        "Chiquinho"
+    ]
+}
+
