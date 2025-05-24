@@ -15,7 +15,7 @@ import json
 def is_valid_url(url):
     return bool(re.match(r'^https:\/\/(www\.sefaz\.rs\.gov\.br|dfe-portal\.svrs\.rs\.gov\.br)', url))
 
-#metodo de obtenção convencional 
+#metodo de obtenção convencional (QR code)
 def get_nfc_data(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
@@ -30,15 +30,27 @@ def get_nfc_data(url):
     for row in soup.select('tr[id^="Item"]'):  # Seleciona todas as linhas cujo id começa com "Item"
         cells = row.find_all('td')
         if len(cells) >= 2:  # Verifica se a linha tem pelo menos 2 células (nome e valor total)
-            name = cells[0].text.strip()
+            name = cells[0].text.strip().split('\r')[0]  # Pega o nome do item
             value_text = cells[-1].text.strip().replace('R$', '').replace('\r', '').replace('\n', '').replace('\t', '')  # Limpa a string de valor
             value_text = value_text.replace('Vl. Total', '')  # Remove 'Vl. Total' da string
             value = float(value_text.replace(',', '.').strip())  # Substitui vírgulas por pontos e converte para float
-            items.append({'name': name, 'total_value': value})
+
+            quantity = cells[0].text.strip().split("Qtde.:")[1].split("UN:")[0]  # Pega a quantidade
+            unit = cells[0].text.strip().split("UN:")[1].split("Vl. Unit.:")[0]  # Pega a unidade
+            items.append({'name': name, 'totalValue': value, 'quantity': quantity, 'unit': unit})
     
-    return items, total_value
+    storeName = soup.select_one('#u20').text.strip()
+    date = soup.select_one('#infos ul li').decode_contents().split('Emissão: </strong>')[1][0:19]
+    nfc = {
+        'storeName': storeName,
+        'date': date,
+        'items': items,
+        'totalValue': total_value
+    }
+    return nfc
 
 #metodo de obtenção da nota diferente.
+#nao sei o que precisaria mudar para pegar nome do estabelecimento e data
 def get_alternative_nfc_data(url):
     options = Options()
     options.headless = True  # Configuração para rodar em modo headless
@@ -80,7 +92,7 @@ def get_alternative_nfc_data(url):
                 total_value = cells[5].text.replace(',', '.')
 
                 name = f"{description} (Código: {code}) Qtde.: {quantity} {unit} Vl. Unit.: {unit_value}" # transforma a para toda ali em cima em uma string so
-                items.append({'name': name, 'total_value': float(total_value)}) # da push na lista de itens
+                items.append({'name': name, 'totalValue': float(total_value), 'quantity': quantity, 'unit': unit}) # da push na lista de itens
             item_id += 1
         except NoSuchElementException:
             break  # Sai do loop quando não encontrar mais itens
@@ -98,7 +110,13 @@ url = sys.argv[1]
 if not url or not is_valid_url(url):
     print(json.dumps({'error': 'URL inválida ou fora dos padrões permitidos.'}))
 
-items, total_value = get_nfc_data(url)
-if not items:
+nfc = get_nfc_data(url)
+if not nfc.items:
     items, total_value = get_alternative_nfc_data(url)
-print(json.dumps({'items': items, 'total_value': total_value}))
+    nfc = {
+        'storeName': '',
+        'date': '',
+        'items': items,
+        'totalValue': total_value
+    }
+print(json.dumps(nfc))

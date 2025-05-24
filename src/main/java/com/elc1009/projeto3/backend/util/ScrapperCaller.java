@@ -11,9 +11,6 @@ public class ScrapperCaller {
         try {
             File scriptFile = new File("scrapper/main.py");
             ProcessBuilder processBuilder = new ProcessBuilder("python", scriptFile.getPath(), url);
-            
-            System.out.println("Launching script with URL: " + url);
-            System.out.println("Current working directory: " + System.getProperty("user.dir"));
 
             Process process = processBuilder.start();
 
