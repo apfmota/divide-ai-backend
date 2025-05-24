@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 
 import org.springframework.util.DigestUtils;
 
+// Não me orgulho de nada disso
 public class PasswordEncrypt {
     
     public static String passwordToMD5Hash(String password) {

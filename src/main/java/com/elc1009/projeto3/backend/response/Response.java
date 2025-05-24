@@ -1,5 +1,8 @@
 package com.elc1009.projeto3.backend.response;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+
 public abstract class Response {
     
     private final String type;
@@ -17,4 +20,14 @@ public abstract class Response {
     public String getMessage() {
         return message;
     }
+
+    @Override
+    public String toString() {
+        try {
+            ObjectWriter writer = new ObjectMapper().writer().withDefaultPrettyPrinter();
+            return writer.writeValueAsString(this);
+        } catch (Exception e) {
+            return null;
+        }
+    }   
 }

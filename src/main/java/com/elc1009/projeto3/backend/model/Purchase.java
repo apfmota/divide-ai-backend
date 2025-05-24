@@ -1,26 +1,42 @@
 package com.elc1009.projeto3.backend.model;
 
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 
 @Entity
 public class Purchase {
     
     private Long id;
-    private List<Item> items;
+    private List<Item> items = new ArrayList<>();
     private User user;
     private List<String> payers;
     private String url;
     private Date scanDate;
     private Date purchaseDate;
     private String storeName;
+    private BigDecimal totalValue;
+
+    public BigDecimal getTotalValue() {
+        return totalValue;
+    }
+
+    public void setTotalValue(BigDecimal totalValue) {
+        this.totalValue = totalValue;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -42,6 +58,8 @@ public class Purchase {
     }
     
     @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "user_id")
     public User getUser() {
         return user;
     }
@@ -90,6 +108,4 @@ public class Purchase {
     public void setStoreName(String storeName) {
         this.storeName = storeName;
     }
-
-    
 }

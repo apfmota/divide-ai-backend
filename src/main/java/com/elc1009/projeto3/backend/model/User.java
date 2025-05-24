@@ -1,6 +1,9 @@
 package com.elc1009.projeto3.backend.model;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -14,7 +17,7 @@ public class User {
 
     private String userName;
     private String password;
-    private List<Purchase> purchases;
+    private List<Purchase> purchases = new ArrayList<>();
 
     @Id
     @Column(unique = true)
@@ -35,6 +38,7 @@ public class User {
     }
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     public List<Purchase> getPurchases() {
         return purchases;
     }

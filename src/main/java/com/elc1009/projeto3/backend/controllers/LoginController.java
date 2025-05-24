@@ -27,7 +27,7 @@ public class LoginController {
     public Object login(@RequestBody User user, HttpServletRequest request) {
         if (userRepository.existsByUserName(user.getUserName())) {
             if (userRepository.findByUserNameAndPassword(user.getUserName(), PasswordEncrypt.passwordToMD5Hash(user.getPassword())) != null) {
-                request.getSession().setAttribute("user", user);
+                request.getSession().setAttribute("userName", user.getUserName());
                 return new SuccessResponse("Login successful");
             } else {
                 return new ErrorResponse("Invalid password");
