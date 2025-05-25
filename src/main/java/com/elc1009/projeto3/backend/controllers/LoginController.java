@@ -25,9 +25,10 @@ public class LoginController {
     @PostMapping
     @ResponseBody
     public Object login(@RequestBody User user, HttpServletRequest request) {
-        if (userRepository.existsByUserName(user.getUserName())) {
-            if (userRepository.findByUserNameAndPassword(user.getUserName(), PasswordEncrypt.passwordToMD5Hash(user.getPassword())) != null) {
-                request.getSession().setAttribute("userName", user.getUserName());
+        if (userRepository.existsByEmail(user.getEmail())) {
+            User existingUser = userRepository.findByEmailAndPassword(user.getEmail(), PasswordEncrypt.passwordToMD5Hash(user.getPassword()));
+            if (existingUser != null) {
+                request.getSession().setAttribute("userName", existingUser.getUserName());
                 return new SuccessResponse("Login successful");
             } else {
                 return new ErrorResponse("Invalid password");

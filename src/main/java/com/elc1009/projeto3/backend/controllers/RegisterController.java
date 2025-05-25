@@ -21,8 +21,7 @@ public class RegisterController {
 
 	@PostMapping
 	public Object register(@RequestBody User user) {
-		System.out.println("Registering user: " + user.getUserName());
-		if (userRepository.existsByUserName(user.getUserName())) {
+		if (userRepository.existsByEmail(user.getEmail())) {
 			return new ErrorResponse("User already exists");
 		}
 		user.setPassword(PasswordEncrypt.passwordToMD5Hash(user.getPassword()));

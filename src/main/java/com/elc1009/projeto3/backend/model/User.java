@@ -17,6 +17,7 @@ public class User {
 
     private String userName;
     private String password;
+    private String email;
     private List<Purchase> purchases = new ArrayList<>();
 
     @Id
@@ -45,6 +46,15 @@ public class User {
 
     public void setPurchases(List<Purchase> purchases) {
         this.purchases = purchases;
+    }
+
+    @Column(unique = true)
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
     
 }

@@ -2,6 +2,7 @@ package com.elc1009.projeto3.backend.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.GenerationType;
@@ -85,6 +86,7 @@ public class Purchase {
         this.url = url;
     }
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     public Date getScanDate() {
         return scanDate;
     }
@@ -93,6 +95,7 @@ public class Purchase {
         this.scanDate = scanDate;
     }
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     public Date getPurchaseDate() {
         return purchaseDate;
     }
