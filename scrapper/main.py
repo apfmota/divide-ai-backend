@@ -35,7 +35,9 @@ def get_nfc_data(url):
             value_text = value_text.replace('Vl. Total', '')  # Remove 'Vl. Total' da string
             value = float(value_text.replace(',', '.').strip())  # Substitui vírgulas por pontos e converte para float
 
-            quantity = cells[0].text.strip().split("Qtde.:")[1].split("UN:")[0]  # Pega a quantidade
+            quantity = cells[0].text.strip().split("Qtde.:")[1].split("UN:")[0]
+            # Pega a quantidade
+            quantity = quantity.replace('.', '').replace(',', '.').strip()
             unit = cells[0].text.strip().split("UN:")[1].split("Vl. Unit.:")[0]  # Pega a unidade
             items.append({'name': name, 'totalValue': value, 'quantity': quantity, 'unit': unit})
     
