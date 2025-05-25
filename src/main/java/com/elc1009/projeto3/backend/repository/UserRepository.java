@@ -8,7 +8,7 @@ import com.elc1009.projeto3.backend.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
     
-    User findByUserName(String userName);
+    User findByUsername(String username);
     
     User findByEmailAndPassword(String email, String password);
     

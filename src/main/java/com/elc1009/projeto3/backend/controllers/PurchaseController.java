@@ -44,7 +44,7 @@ public class PurchaseController {
     @PostMapping
     public String createPurchase(@RequestBody Purchase purchase, HttpServletRequest request) {
         try {
-            User user = (User) userRepository.findByUserName((String) request.getSession().getAttribute("userName"));
+            User user = (User) userRepository.findByUsername((String) request.getSession().getAttribute("username"));
             purchase.setUser(user);
             purchase.setScanDate(new Date());
             String nfcData = ScrapperCaller.call(purchase.getUrl());
@@ -82,7 +82,7 @@ public class PurchaseController {
 
     @GetMapping(params = "!id")
     public List<Purchase> getPurchases(HttpServletRequest request) {
-        User user = (User) userRepository.findByUserName((String) request.getSession().getAttribute("userName"));
+        User user = (User) userRepository.findByUsername((String) request.getSession().getAttribute("username"));
         return purchaseRepository.findByUser(user);
     }
 

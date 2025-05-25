@@ -28,7 +28,7 @@ public class LoginController {
         if (userRepository.existsByEmail(user.getEmail())) {
             User existingUser = userRepository.findByEmailAndPassword(user.getEmail(), PasswordEncrypt.passwordToMD5Hash(user.getPassword()));
             if (existingUser != null) {
-                request.getSession().setAttribute("userName", existingUser.getUserName());
+                request.getSession().setAttribute("username", existingUser.getUsername());
                 return new SuccessResponse("Login successful");
             } else {
                 return new ErrorResponse("Invalid password");
