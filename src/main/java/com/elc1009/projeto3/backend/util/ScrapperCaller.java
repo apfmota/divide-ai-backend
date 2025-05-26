@@ -10,7 +10,7 @@ public class ScrapperCaller {
     public static String call(String url) {
         try {
             File scriptFile = new File("scrapper/main.py");
-            ProcessBuilder processBuilder = new ProcessBuilder("pytho3", scriptFile.getPath(), url);
+            ProcessBuilder processBuilder = new ProcessBuilder("python3", scriptFile.getPath(), url);
 
             Process process = processBuilder.start();
 
