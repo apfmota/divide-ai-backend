@@ -1,3 +1,13 @@
+FROM maven:3.9.6-eclipse-temurin-17 AS builder
+
+WORKDIR /app
+
+# Copy the source code
+COPY . .
+
+# Build the JAR
+RUN mvn clean package -DskipTests
+
 FROM openjdk:17-jdk-slim
 
 # Install python3 and pip
