@@ -3,7 +3,9 @@ package com.elc1009.projeto3.backend.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.elc1009.projeto3.backend.model.User;
@@ -17,7 +19,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/user")
-public class userController {
+public class UserController {
     
     @Autowired
     private UserRepository userRepository;
@@ -32,7 +34,7 @@ public class userController {
     }
 
     @PostMapping
-    public Response updateUser(User userDto, HttpServletRequest request) {
+    public Response updateUser(@RequestBody User userDto, HttpServletRequest request) {
         User existingUser = userRepository.findByUsername((String) request.getSession().getAttribute("username"));
         if (existingUser == null) {
             return new ErrorResponse("User not found");

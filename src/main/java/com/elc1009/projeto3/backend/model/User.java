@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -16,6 +17,7 @@ import jakarta.persistence.Column;
 public class User {
 
     private String username;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private String email;
     private List<Purchase> purchases = new ArrayList<>();
@@ -30,7 +32,6 @@ public class User {
         this.username = username;
     }
 
-    @JsonIgnore
     public String getPassword() {
         return password;
     }
