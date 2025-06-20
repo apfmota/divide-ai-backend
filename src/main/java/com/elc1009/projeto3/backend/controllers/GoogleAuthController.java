@@ -51,16 +51,14 @@ public class GoogleAuthController {
             );
 
             com.google.api.client.auth.oauth2.TokenResponse tokenResponse = tokenRequest.execute();
-            String idTokenString = (String) tokenResponse.get("id_token"); // Get the ID token string
+            String idTokenString = (String) tokenResponse.get("id_token");
 
             if (idTokenString == null || idTokenString.isEmpty()) {
                 return new ErrorResponse("ID Token not received from Google during code exchange.");
             }
 
             GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(httpTransport, jsonFactory)
-                    .setAudience(Collections.singletonList(CLIENT_ID)) // IMPORTANT: Verify that the token's audience is YOUR client ID
-                    // If you also have Android/iOS client IDs, you might add them here:
-                    // .setAudience(Arrays.asList(CLIENT_ID_WEB, CLIENT_ID_ANDROID, CLIENT_ID_IOS))
+                    .setAudience(Collections.singletonList(CLIENT_ID))
                     .build();
 
             GoogleIdToken idToken = verifier.verify(idTokenString);
@@ -81,8 +79,7 @@ public class GoogleAuthController {
                 return new GoogleAuthResponse(email, false);
             }
         } catch (Exception e) {
-            // Catch any other unexpected exceptions during the process
-            e.printStackTrace(); // Log the full stack trace for debugging
+            e.printStackTrace();
             return new ErrorResponse("An unexpected error occurred during Google authentication: " + e.getMessage());
         }
     }

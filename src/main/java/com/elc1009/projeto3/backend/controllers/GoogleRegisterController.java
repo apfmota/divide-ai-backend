@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.elc1009.projeto3.backend.model.User;
 import com.elc1009.projeto3.backend.repository.UserRepository;
+import com.elc1009.projeto3.backend.response.ErrorResponse;
 import com.elc1009.projeto3.backend.response.SuccessResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,11 +24,16 @@ public class GoogleRegisterController {
     
     @PostMapping
     public Object register(@RequestBody Map<String, String> body, HttpServletRequest request) {
-        User user = new User();
-        user.setEmail(body.get("email"));
-        user.setUsername(body.get("username"));
-        userRepository.save(user);
-        request.getSession().setAttribute("username", user.getUsername());
-        return new SuccessResponse("User successfully registered");
+        String email = body.get("email");
+        String username = body.get("username");
+        if (userRepository.findByUsername(username) == null) {
+            User user = new User();
+            user.setEmail(email);
+            user.setUsername(username);
+            userRepository.save(user);
+            request.getSession().setAttribute("username", user.getUsername());
+            return new SuccessResponse("User successfully registered");
+        }
+        return new ErrorResponse("Username already exists");
     }
 }

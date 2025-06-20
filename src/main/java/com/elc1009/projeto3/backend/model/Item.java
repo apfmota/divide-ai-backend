@@ -23,6 +23,7 @@ public class Item {
     private String name;
     private BigDecimal quantity;
     private String unit;
+    private String category;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -84,5 +85,13 @@ public class Item {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }
