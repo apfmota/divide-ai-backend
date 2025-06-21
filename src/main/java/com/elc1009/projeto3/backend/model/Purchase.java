@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.ElementCollection;
@@ -11,8 +12,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -24,7 +28,7 @@ public class Purchase {
     private Long id;
     private List<Item> items = new ArrayList<>();
     private User user;
-    private List<String> payers;
+    private List<User> payers = new ArrayList<>();
     private String url;
     private Date scanDate;
     private Date purchaseDate;
@@ -69,12 +73,16 @@ public class Purchase {
         this.user = user;
     }
 
-    @ElementCollection
-    public List<String> getPayers() {
+    @ManyToMany
+    @JoinTable(name = "PURCHASE_PAYERS",
+        joinColumns = @JoinColumn(name = "PURCHASE_ID"),
+        inverseJoinColumns = @JoinColumn(name = "USERNAME"))
+    @JsonIgnore
+    public List<User> getPayers() {
         return payers;
     }
 
-    public void setPayers(List<String> payers) {
+    public void setPayers(List<User> payers) {
         this.payers = payers;
     }
 
@@ -110,5 +118,11 @@ public class Purchase {
 
     public void setStoreName(String storeName) {
         this.storeName = storeName;
+    }
+
+    @JsonProperty("payers")
+    @Transient
+    public List<String> getPayersUsernames() {
+        return payers.stream().map(User::getUsername).toList();
     }
 }

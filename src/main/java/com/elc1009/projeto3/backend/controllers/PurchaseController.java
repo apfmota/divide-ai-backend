@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.elc1009.projeto3.backend.dto.ItemJsonDto;
 import com.elc1009.projeto3.backend.dto.PurchaseJsonDTo;
+import com.elc1009.projeto3.backend.dto.PurchaseUpdateDto;
 import com.elc1009.projeto3.backend.model.Item;
 import com.elc1009.projeto3.backend.model.Purchase;
 import com.elc1009.projeto3.backend.model.User;
@@ -99,9 +100,12 @@ public class PurchaseController {
     }
 
     @PutMapping
-    public Response updatePayers(@RequestBody Purchase purchaseDto) {
+    public Response updatePayers(@RequestBody PurchaseUpdateDto purchaseDto) {
         Purchase purchase = purchaseRepository.findById(purchaseDto.getId()).get();
-        purchase.setPayers(purchaseDto.getPayers());
+        for (String payerUsername : purchaseDto.getPayers()) {
+            User payer = userRepository.findByUsername(payerUsername);
+            purchase.getPayers().add(payer);
+        }
         purchaseRepository.save(purchase);
         return new SuccessResponse("purchase updated successfully");
     }

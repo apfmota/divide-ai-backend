@@ -8,6 +8,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
@@ -21,6 +24,8 @@ public class User {
     private String password;
     private String email;
     private List<Purchase> purchases = new ArrayList<>();
+    private List<Item> items = new ArrayList<>();
+    private List<Purchase> payingPurchases = new ArrayList<>();
 
     @Id
     @Column(unique = true)
@@ -58,5 +63,26 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
+    @ManyToMany
+    @JoinTable(
+        name = "USER_ITEMS",
+        joinColumns = @JoinColumn(name = "ITEM_ID"), 
+        inverseJoinColumns = @JoinColumn(name = "USERNAME"))
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
+    @ManyToMany(mappedBy = "payers")
+    public List<Purchase> getPayingPurchases() {
+        return payingPurchases;
+    }
+
+    public void setPayingPurchases(List<Purchase> payingPurchases) {
+        this.payingPurchases = payingPurchases;
+    }   
 }

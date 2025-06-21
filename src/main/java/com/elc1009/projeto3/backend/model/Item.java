@@ -1,24 +1,27 @@
 package com.elc1009.projeto3.backend.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Transient;
 
 @Entity
 public class Item {
     
     private Long id;
     private BigDecimal value;
-    private List<String> payers;
+    private List<User> payers = new ArrayList<>();
     private Purchase purchase;
     private String name;
     private BigDecimal quantity;
@@ -44,12 +47,13 @@ public class Item {
         this.value = value;
     }
     
-    @ElementCollection
-    public List<String> getPayers() {
+    @ManyToMany(mappedBy = "items")
+    @JsonIgnore
+    public List<User> getPayers() {
         return payers;
     }
     
-    public void setPayers(List<String> payers) {
+    public void setPayers(List<User> payers) {
         this.payers = payers;
     }
 
@@ -93,5 +97,11 @@ public class Item {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    @JsonProperty("payers")
+    @Transient
+    public List<String> getPayersUsernames() {
+        return payers.stream().map(User::getUsername).toList();
     }
 }

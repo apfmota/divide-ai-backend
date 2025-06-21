@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.elc1009.projeto3.backend.dto.ItemDto;
 import com.elc1009.projeto3.backend.model.Item;
 import com.elc1009.projeto3.backend.model.Purchase;
+import com.elc1009.projeto3.backend.model.User;
 import com.elc1009.projeto3.backend.repository.ItemRepository;
 import com.elc1009.projeto3.backend.repository.PurchaseRepository;
+import com.elc1009.projeto3.backend.repository.UserRepository;
 import com.elc1009.projeto3.backend.response.Response;
 import com.elc1009.projeto3.backend.response.SuccessResponse;
 
@@ -27,10 +29,25 @@ class ItemController {
     @Autowired
     private PurchaseRepository purchaseRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @PutMapping
     public Response updatePayers(@RequestBody ItemDto itemDto) {
         Item item = itemRepository.findById(itemDto.getId()).orElse(null);
-        item.setPayers(itemDto.getPayers());
+        for (String payerUsername : itemDto.getPayers()) {
+            User payer = userRepository.findByUsername(payerUsername);
+            if (!payer.getItems().stream().anyMatch(i -> i.getId().equals(item.getId()))) { //feio mas to com preguiça de fazer melhor
+                payer.getItems().add(item);
+                userRepository.save(payer);
+            }
+        }
+        for (User payer : item.getPayers()) {
+            if (!itemDto.getPayers().contains(payer.getUsername())) {
+                payer.getItems().remove(item);
+                userRepository.save(payer);
+            }
+        }
         itemRepository.save(item);
         return new SuccessResponse("Item updated successfully");
     }
