@@ -27,7 +27,7 @@ public class GoogleAuthController {
 
     private static final String CLIENT_ID = "823491690532-81b0v1ffin4kvvmb0jlpn51dvlivcjq1.apps.googleusercontent.com";
     private static final String CLIENT_SECRET = "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";
-    private static final String REDIRECT_URI = "http://localhost:5173";
+    private static final String REDIRECT_URI = "https://project4-2025a-andriel-joao.vercel.app";
 
     private final NetHttpTransport httpTransport = new NetHttpTransport();
     private final JsonFactory jsonFactory = new GsonFactory();
