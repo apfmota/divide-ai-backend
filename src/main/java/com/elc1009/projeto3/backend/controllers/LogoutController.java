@@ -15,10 +15,12 @@ public class LogoutController {
     
     @GetMapping
     public Response logout(HttpServletRequest request) {
+
         if (request.getSession().getAttribute("username") == null) {
             return new ErrorResponse("Already logged out");
         } else {
-            request.getSession().removeAttribute("username");
+            request.getSession().removeAttribute("username");        
+            request.getSession().invalidate();
             return new SuccessResponse("Logout successful");
         }
     }

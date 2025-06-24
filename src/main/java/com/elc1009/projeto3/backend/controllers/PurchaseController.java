@@ -84,7 +84,7 @@ public class PurchaseController {
     @GetMapping(params = "!id")
     public List<Purchase> getPurchases(HttpServletRequest request) {
         User user = (User) userRepository.findByUsername((String) request.getSession().getAttribute("username"));
-        return purchaseRepository.findByUser(user);
+        return user.getPurchases();
     }
 
     @GetMapping(params = "id")
